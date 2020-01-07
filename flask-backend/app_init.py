@@ -1,6 +1,6 @@
 from services.database import db
 from services.jwt import jwt
-from services.api import api
+from services.api.api import api
 from app import app
 
 
@@ -13,8 +13,7 @@ def init_app():
 
 def init_db():
     db.init_app(app)
-    from models.user import ModelUser
-    from models.user import ModelLoginHistory
+    from models.user import ModelUser, ModelLoginHistory
 
 
 def init_api():
@@ -26,6 +25,4 @@ def init_jwt():
 
 
 def init_routes():
-    pass
-    # from routes.routes import routes_list
-    # routes_list(app)
+    import services.api.routes.routes

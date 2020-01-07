@@ -25,7 +25,7 @@ db.create_all()
 ph = PasswordHasher()
 
 # Users
-user = ModelUser(username='user', password=ph.hash('user'), name='Wojciech', surname='Wójcik')
+user = ModelUser(username='wojtasiq', password=ph.hash('wojtasiq'), name='Wojciech', surname='Wójcik')
 
 login1 = ModelLoginHistory()
 login2 = ModelLoginHistory()
