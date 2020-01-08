@@ -6,7 +6,8 @@ from services.api.api import api
 from helpers.user_marshals import login_history_fields, user_data_fields
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from werkzeug.exceptions import BadRequest, Unauthorized
-from models.user import ModelUser
+from models.user import ModelUser, ModelLoginHistory
+from services.database import db
 
 
 @api.route('/login')
@@ -33,8 +34,12 @@ class Login(Resource):
         except VerifyMismatchError:
             raise Unauthorized()
 
+        user.login_history.append(ModelLoginHistory())
+        db.session.add(user)
+        db.session.commit()
+
         token = create_access_token(identity=username)
-        return jsonify({'data': {'token': token}})
+        return jsonify({'token': token})
 
 
 @api.route('/auth/user/login_history')
@@ -46,7 +51,7 @@ class LoginHistory(Resource):
         user = ModelUser.query.filter_by(username=identity).first()
 
         login_list = user.login_history
-        return jsonify({'data': [marshal(login, login_history_fields) for login in login_list]})
+        return jsonify({'loginDates': [marshal(login, login_history_fields) for login in login_list]})
 
 
 @api.route('/auth/user/me')
@@ -57,4 +62,4 @@ class LoginHistory(Resource):
 
         user = ModelUser.query.filter_by(username=identity).first()
 
-        return jsonify({'data': marshal(user, user_data_fields)})
+        return jsonify({'user': marshal(user, user_data_fields)})

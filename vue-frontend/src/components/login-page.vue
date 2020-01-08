@@ -28,7 +28,7 @@
                     />
                     <v-card-actions>
                         <v-spacer/>
-                        <v-btn type="submit" color="primary">Login</v-btn>
+                        <v-btn type="submit" color="primary" :loading="isAuthStatusLoading">Login</v-btn>
                     </v-card-actions>
                 </v-form>
             </v-card-text>
@@ -37,12 +37,20 @@
 </template>
 
 <script>
+    import store from "../store/store";
+
     export default {
+        name: "login-page",
         data(){
             return {
                 username : "",
                 password : ""
             }
+        },
+        computed: {
+          isAuthStatusLoading () {
+              return store.getters.authStatus === 'loading';
+          }
         },
         methods: {
             login: function () {
