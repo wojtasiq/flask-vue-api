@@ -9,9 +9,10 @@
                 <v-spacer/>
             </v-toolbar>
             <v-card-text>
-                <v-form>
+                <v-form @submit.prevent="login">
                     <v-text-field
                             label="Login"
+                            v-model="username"
                             name="login"
                             prepend-icon="mdi-account-circle"
                             type="text"
@@ -19,22 +20,39 @@
 
                     <v-text-field
                             id="password"
+                            v-model="password"
                             label="Password"
                             name="password"
                             prepend-icon="mdi-lock"
                             type="password"
                     />
+                    <v-card-actions>
+                        <v-spacer/>
+                        <v-btn type="submit" color="primary">Login</v-btn>
+                    </v-card-actions>
                 </v-form>
             </v-card-text>
-            <v-card-actions>
-                <v-spacer/>
-                <v-btn color="primary">Login</v-btn>
-            </v-card-actions>
         </v-card>
     </v-col>
 </template>
 
 <script>
-    export default {}
+    export default {
+        data(){
+            return {
+                username : "",
+                password : ""
+            }
+        },
+        methods: {
+            login: function () {
+                let username = this.username
+                let password = this.password
+                this.$store.dispatch('login', { username, password })
+                    .then(() => this.$router.push('/'))
+                    .catch(err => window.console.log(err))
+            }
+        }
+    }
 </script>
 

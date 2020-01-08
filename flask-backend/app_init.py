@@ -1,6 +1,7 @@
 from services.database import db
 from services.jwt import jwt
 from services.api.api import api
+from flask_cors import CORS
 from app import app
 
 
@@ -9,6 +10,7 @@ def init_app():
     init_api()
     init_jwt()
     init_routes()
+    CORS(app)
 
 
 def init_db():
