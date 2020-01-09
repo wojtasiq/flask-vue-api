@@ -24,6 +24,8 @@ router.beforeEach((to,from, next) => {
         }
         return next(loginPage)
     }else {
+        store.dispatch('logout')
+            .catch(err => window.console.log(err))
         return next()
     }
 });
