@@ -42,7 +42,7 @@ class LoginTestCase(unittest.TestCase):
         os.remove('../test.db.sqlite')
         pass
 
-    def test_login_path(self):
+    def test_login_correct_code(self):
         parameter = {'username': 'wojtasiq', 'password': 'wojtasiq'}
         response = self.client.post('/login', json=parameter, headers={'content-type': 'application/json'})
 
@@ -59,6 +59,12 @@ class LoginTestCase(unittest.TestCase):
         response_json = self.client.post('/login', json=parameter, headers={'content-type': 'application/json'}).json
 
         self.assertFalse('token' in response_json)
+
+    def test_login_incorrect_code(self):
+        parameter = {'username': 'wrong', 'password': 'wrong'}
+        response = self.client.post('/login', json=parameter, headers={'content-type': 'application/json'})
+
+        self.assertEquals(response.status_code, 401)
 
     def test_login_history(self):
         parameter = {'username': 'wojtasiq', 'password': 'wojtasiq'}
